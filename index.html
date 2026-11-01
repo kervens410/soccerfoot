@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORTZONE | Live Sports</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #080d18;
+    color: white;
+}
+
+header {
+    background: #101a2d;
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #00e676;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+}
+
+nav a:hover {
+    color: #00e676;
+}
+
+.hero {
+    padding: 65px 7%;
+    background: linear-gradient(120deg, #102b27, #101a35);
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #b9c4d6;
+    margin-bottom: 25px;
+}
+
+.search {
+    padding: 13px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.buttons {
+    text-align: center;
+    padding: 25px;
+}
+
+button {
+    background: #17243a;
+    color: white;
+    border: 1px solid #30415b;
+    padding: 12px 23px;
+    margin: 5px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+button:hover, button.active {
+    background: #00c853;
+    color: #07120c;
+}
+
+.section {
+    padding: 30px 6%;
+}
+
+.section h2 {
+    margin-bottom: 22px;
+    border-left: 4px solid #00e676;
+    padding-left: 12px;
+}
+
+.matches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #111d30;
+    border: 1px solid #25344a;
+    border-radius: 12px;
+    padding: 22px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #00e676;
+}
+
+.live {
+    color: #ff4545;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.teams {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.watch {
+    width: 100%;
+    background: #00c853;
+    color: #06130b;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.player {
+    display: none;
+    padding: 30px 6%;
+}
+
+.player video {
+    width: 100%;
+    max-height: 500px;
+    background: black;
+    border-radius: 12px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    background: #101a2d;
+    color: #9eacc0;
+    margin-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">⚡ SPORTZONE</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#soccer">Soccer</a>
+        <a href="#basketball">Basketball</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <h1>ALL SPORTS. ONE PLACE.</h1>
+    <p>Watch your favorite sports and never miss a game.</p>
+    <input class="search" id="search"
+    type="text" placeholder="Search teams or matches...">
+</section>
+
+<div class="buttons">
+    <button class="active" onclick="filterSport('all',this)">All Games</button>
+    <button onclick="filterSport('soccer',this)">⚽ Soccer</button>
+    <button onclick="filterSport('basketball',this)">🏀 Basketball</button>
+</div>
+
+<section class="section" id="soccer">
+    <h2>⚽ Soccer Matches</h2>
+    <div class="matches">
+
+        <div class="card" data-sport="soccer">
+            <div class="live">● SOCCER</div>
+            <div class="teams">Real Madrid vs Barcelona</div>
+            <p>Football • La Liga</p>
+            <button class="watch" onclick="openPlayer('real')">
+                Watch Match
+            </button>
+        </div>
+
+        <div class="card" data-sport="soccer">
+            <div class="live">● SOCCER</div>
+            <div class="teams">Arsenal vs Chelsea</div>
+            <p>Football • Premier League</p>
+            <button class="watch" onclick="openPlayer('arsenal')">
+                Watch Match
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section" id="basketball">
+    <h2>🏀 Basketball Matches</h2>
+    <div class="matches">
+
+        <div class="card" data-sport="basketball">
+            <div class="live">● BASKETBALL</div>
+            <div class="teams">Lakers vs Warriors</div>
+            <p>Basketball • NBA</p>
+            <button class="watch" onclick="openPlayer('nba')">
+                Watch Match
+            </button>
+        </div>
+
+        <div class="card" data-sport="basketball">
+            <div class="live">● BASKETBALL</div>
+            <div class="teams">Celtics vs Bulls</div>
+            <p>Basketball • NBA</p>
+            <button class="watch" onclick="openPlayer('celtics')">
+                Watch Match
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<section class="player" id="player">
+    <h2 id="playerTitle">Live Sports</h2>
+
+    <video id="video" controls playsinline>
+        Your browser does not support video.
+    </video>
+
+    <p id="playerMessage">
+        Add an authorized streaming URL to watch this match.
+    </p>
+
+    <button onclick="closePlayer()">Close Player</button>
+</section>
+
+<footer>
+    <p>© 2026 SPORTZONE | Your Home for Sports</p>
+    <p>Soccer • Basketball • Live Sports</p>
+</footer>
+
+<script>
+const streams = {
+    real: "",
+    arsenal: "",
+    nba: "",
+    celtics: ""
+};
+
+function filterSport(sport, button) {
+    document.querySelectorAll(".card").forEach(card => {
+        card.style.display =
+            sport === "all" || card.dataset.sport === sport
+            ? "block" : "none";
+    });
+
+    document.querySelectorAll(".buttons button")
+    .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+}
+
+document.getElementById("search").addEventListener("input", function() {
+    const term = this.value.toLowerCase();
+
+    document.querySelectorAll(".card").forEach(card => {
+        card.style.display =
+            card.innerText.toLowerCase().includes(term)
+            ? "block" : "none";
+    });
+});
+
+function openPlayer(id) {
+    const player = document.getElementById("player");
+    const video = document.getElementById("video");
+
+    document.getElementById("playerTitle").innerText =
+        "Watch " + id.toUpperCase();
+
+    player.style.display = "block";
+
+    if (streams[id]) {
+        video.src = streams[id];
+        document.getElementById("playerMessage").innerText =
+            "Authorized stream loaded.";
+    } else {
+        video.removeAttribute("src");
+        video.load();
+
+        document.getElementById("playerMessage").innerText =
+            "No stream added yet. Add an official licensed video URL.";
+    }
+
+    player.scrollIntoView({behavior: "smooth"});
+}
+
+function closePlayer() {
+    const video = document.getElementById("video");
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    document.getElementById("player").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+
+

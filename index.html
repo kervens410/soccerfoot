@@ -1,326 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPORTZONE | Live Sports</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+  <title>SPORTZONE | Live Sports</title>
 
-body {
-    font-family: Arial, sans-serif;
-    background: #080d18;
-    color: white;
-}
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 
-header {
-    background: #101a2d;
-    padding: 20px 6%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-.logo {
-    font-size: 27px;
-    font-weight: bold;
-    color: #00e676;
-}
+    body {
+      background: #080d16;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 12px;
-}
+    /* HEADER */
+    header {
+      height: 75px;
+      background: #101a29;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      border-bottom: 1px solid #263448;
+    }
 
-nav a:hover {
-    color: #00e676;
-}
+    .logo {
+      font-size: 27px;
+      font-weight: bold;
+      color: #00e676;
+    }
 
-.hero {
-    padding: 65px 7%;
-    background: linear-gradient(120deg, #102b27, #101a35);
-    text-align: center;
-}
+    .logo span {
+      color: white;
+    }
 
-.hero h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
-}
+    .live-label {
+      background: #e53935;
+      padding: 9px 15px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
 
-.hero p {
-    color: #b9c4d6;
-    margin-bottom: 25px;
-}
+    /* NAVIGATION */
+    nav {
+      display: flex;
+      gap: 25px;
+      padding: 18px 6%;
+      background: #0d1522;
+      border-bottom: 1px solid #263448;
+    }
 
-.search {
-    padding: 13px;
-    width: 90%;
-    max-width: 450px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-}
+    nav a {
+      color: #c4cedb;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.buttons {
-    text-align: center;
-    padding: 25px;
-}
+    nav a:hover {
+      color: #00e676;
+    }
 
-button {
-    background: #17243a;
-    color: white;
-    border: 1px solid #30415b;
-    padding: 12px 23px;
-    margin: 5px;
-    border-radius: 7px;
-    cursor: pointer;
-}
+    /* MAIN LAYOUT */
+    .container {
+      width: 90%;
+      max-width: 1450px;
+      margin: 35px auto;
+    }
 
-button:hover, button.active {
-    background: #00c853;
-    color: #07120c;
-}
+    .page-title {
+      margin-bottom: 25px;
+    }
 
-.section {
-    padding: 30px 6%;
-}
+    .page-title h1 {
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
 
-.section h2 {
-    margin-bottom: 22px;
-    border-left: 4px solid #00e676;
-    padding-left: 12px;
-}
+    .page-title p {
+      color: #8b9aaf;
+      font-size: 14px;
+    }
 
-.matches {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 310px;
+      gap: 25px;
+    }
 
-.card {
-    background: #111d30;
-    border: 1px solid #25344a;
-    border-radius: 12px;
-    padding: 22px;
-    transition: 0.3s;
-}
+    /* VIDEO PLAYER */
+    .player-section {
+      background: #111c2b;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #263448;
+    }
 
-.card:hover {
-    transform: translateY(-5px);
-    border-color: #00e676;
-}
+    .player-header {
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.live {
-    color: #ff4545;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
+    .player-header h2 {
+      font-size: 17px;
+    }
 
-.teams {
-    font-size: 19px;
-    font-weight: bold;
-    margin: 15px 0;
-}
+    .demo-label {
+      background: #b7791f;
+      color: white;
+      padding: 7px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+    }
 
-.watch {
-    width: 100%;
-    background: #00c853;
-    color: #06130b;
-    font-weight: bold;
-    margin-top: 15px;
-}
+    video {
+      width: 100%;
+      display: block;
+      background: black;
+      aspect-ratio: 16 / 9;
+    }
 
-.player {
-    display: none;
-    padding: 30px 6%;
-}
+    .match-info {
+      padding: 22px;
+    }
 
-.player video {
-    width: 100%;
-    max-height: 500px;
-    background: black;
-    border-radius: 12px;
-}
+    .teams {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      text-align: center;
+    }
 
-footer {
-    text-align: center;
-    padding: 30px;
-    background: #101a2d;
-    color: #9eacc0;
-    margin-top: 40px;
-}
-</style>
+    .team h3 {
+      font-size: 17px;
+      margin-top: 10px;
+    }
+
+    .team-icon {
+      font-size: 35px;
+    }
+
+    .score {
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .match-status {
+      text-align: center;
+      color: #ffb74d;
+      font-size: 11px;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .description {
+      color: #9baabe;
+      font-size: 13px;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: #111c2b;
+      border: 1px solid #263448;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .sidebar h2 {
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .category {
+      color: #00e676;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 20px 0 10px;
+    }
+
+    .game-card {
+      background: #1a283a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .game-card p {
+      font-size: 13px;
+      margin: 7px 0;
+    }
+
+    .game-card small {
+      color: #91a0b4;
+    }
+
+    .watch-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 9px;
+      border: none;
+      border-radius: 5px;
+      background: #00c853;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .watch-button:hover {
+      background: #009c43;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 60px;
+      padding: 30px 6%;
+      background: #101a29;
+      border-top: 1px solid #263448;
+      text-align: center;
+      color: #8b9aaf;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    footer strong {
+      color: #00e676;
+    }
+
+    @media (max-width: 850px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 0 4%;
+      }
+
+      nav {
+        padding: 18px 4%;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">⚡ SPORTZONE</div>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SPORT<span>ZONE</span></div>
+    <div class="live-label">● SPORTS CENTER</div>
+  </header>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#soccer">Soccer</a>
-        <a href="#basketball">Basketball</a>
-    </nav>
-</header>
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#football">Football</a>
+    <a href="#basketball">Basketball</a>
+    <a href="#player">Watch Demo</a>
+  </nav>
 
-<section class="hero" id="home">
-    <h1>ALL SPORTS. ONE PLACE.</h1>
-    <p>Watch your favorite sports and never miss a game.</p>
-    <input class="search" id="search"
-    type="text" placeholder="Search teams or matches...">
-</section>
+  <!-- MAIN CONTENT -->
+  <div class="container">
 
-<div class="buttons">
-    <button class="active" onclick="filterSport('all',this)">All Games</button>
-    <button onclick="filterSport('soccer',this)">⚽ Soccer</button>
-    <button onclick="filterSport('basketball',this)">🏀 Basketball</button>
-</div>
+    <div class="page-title">
+      <h1>Sports Streaming Center</h1>
+      <p>Follow your favorite sports in one place.</p>
+    </div>
 
-<section class="section" id="soccer">
-    <h2>⚽ Soccer Matches</h2>
-    <div class="matches">
+    <div class="content">
 
-        <div class="card" data-sport="soccer">
-            <div class="live">● SOCCER</div>
-            <div class="teams">Real Madrid vs Barcelona</div>
-            <p>Football • La Liga</p>
-            <button class="watch" onclick="openPlayer('real')">
-                Watch Match
-            </button>
+      <!-- VIDEO PLAYER -->
+      <section class="player-section" id="player">
+
+        <div class="player-header">
+          <h2>Featured Sports Broadcast</h2>
+          <span class="demo-label">DEMO FOOTAGE</span>
         </div>
 
-        <div class="card" data-sport="soccer">
-            <div class="live">● SOCCER</div>
-            <div class="teams">Arsenal vs Chelsea</div>
-            <p>Football • Premier League</p>
-            <button class="watch" onclick="openPlayer('arsenal')">
-                Watch Match
-            </button>
+        <video
+          id="video"
+          controls
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="match-info">
+
+          <div class="teams">
+
+            <div class="team">
+              <div class="team-icon">⚽</div>
+              <h3>Harbor FC</h3>
+            </div>
+
+            <div>
+              <div class="score">2 - 1</div>
+              <div class="match-status">
+                SAMPLE MATCH DATA · NOT LIVE
+              </div>
+            </div>
+
+            <div class="team">
+              <div class="team-icon">⚽</div>
+              <h3>Metro United</h3>
+            </div>
+
+          </div>
+
+          <p class="description">
+            Welcome to SPORTZONE's streaming demonstration.
+            The video above is sample test footage, not an
+            actual football or basketball broadcast. Match
+            names and scores are fictional demonstration data.
+          </p>
+
         </div>
+      </section>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <h2>Sports Categories</h2>
+
+        <div class="category" id="football">
+          FOOTBALL
+        </div>
+
+        <div class="game-card">
+          <small>FOOTBALL · DEMO</small>
+          <p><strong>Harbor FC vs Metro United</strong></p>
+          <small>Sample match</small>
+          <button class="watch-button"
+            onclick="selectMatch('football')">
+            Watch Demo
+          </button>
+        </div>
+
+        <div class="category" id="basketball">
+          BASKETBALL
+        </div>
+
+        <div class="game-card">
+          <small>BASKETBALL · DEMO</small>
+          <p><strong>City Basketball vs United Hoops</strong></p>
+          <small>Sample match listing</small>
+          <button class="watch-button"
+            onclick="selectMatch('basketball')">
+            View Match
+          </button>
+        </div>
+
+      </aside>
 
     </div>
-</section>
+  </div>
 
-<section class="section" id="basketball">
-    <h2>🏀 Basketball Matches</h2>
-    <div class="matches">
+  <!-- FOOTER -->
+  <footer>
+    <strong>SPORTZONE</strong>
+    <p>Your destination for sports coverage.</p>
+    <p>Football | Basketball | Live Sports</p>
+    <p>© 2026 SPORTZONE. All rights reserved.</p>
+  </footer>
 
-        <div class="card" data-sport="basketball">
-            <div class="live">● BASKETBALL</div>
-            <div class="teams">Lakers vs Warriors</div>
-            <p>Basketball • NBA</p>
-            <button class="watch" onclick="openPlayer('nba')">
-                Watch Match
-            </button>
-        </div>
-
-        <div class="card" data-sport="basketball">
-            <div class="live">● BASKETBALL</div>
-            <div class="teams">Celtics vs Bulls</div>
-            <p>Basketball • NBA</p>
-            <button class="watch" onclick="openPlayer('celtics')">
-                Watch Match
-            </button>
-        </div>
-
-    </div>
-</section>
-
-<section class="player" id="player">
-    <h2 id="playerTitle">Live Sports</h2>
-
-    <video id="video" controls playsinline>
-        Your browser does not support video.
-    </video>
-
-    <p id="playerMessage">
-        Add an authorized streaming URL to watch this match.
-    </p>
-
-    <button onclick="closePlayer()">Close Player</button>
-</section>
-
-<footer>
-    <p>© 2026 SPORTZONE | Your Home for Sports</p>
-    <p>Soccer • Basketball • Live Sports</p>
-</footer>
-
-<script>
-const streams = {
-    real: "",
-    arsenal: "",
-    nba: "",
-    celtics: ""
-};
-
-function filterSport(sport, button) {
-    document.querySelectorAll(".card").forEach(card => {
-        card.style.display =
-            sport === "all" || card.dataset.sport === sport
-            ? "block" : "none";
-    });
-
-    document.querySelectorAll(".buttons button")
-    .forEach(btn => btn.classList.remove("active"));
-
-    button.classList.add("active");
-}
-
-document.getElementById("search").addEventListener("input", function() {
-    const term = this.value.toLowerCase();
-
-    document.querySelectorAll(".card").forEach(card => {
-        card.style.display =
-            card.innerText.toLowerCase().includes(term)
-            ? "block" : "none";
-    });
-});
-
-function openPlayer(id) {
-    const player = document.getElementById("player");
+  <!-- VIDEO PLAYER SCRIPT -->
+  <script>
     const video = document.getElementById("video");
 
-    document.getElementById("playerTitle").innerText =
-        "Watch " + id.toUpperCase();
+    // Public sample HLS video for testing the player.
+    // Replace with an authorized broadcast URL for a real match.
+    const demoStream =
+      "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
-    player.style.display = "block";
+    if (Hls.isSupported()) {
+      const hls = new Hls();
 
-    if (streams[id]) {
-        video.src = streams[id];
-        document.getElementById("playerMessage").innerText =
-            "Authorized stream loaded.";
+      hls.loadSource(demoStream);
+      hls.attachMedia(video);
+
+      hls.on(Hls.Events.ERROR, function(event, data) {
+        if (data.fatal) {
+          console.error("Video playback error:", data.type);
+        }
+      });
+
+    } else if (video.canPlayType(
+      "application/vnd.apple.mpegurl"
+    )) {
+      video.src = demoStream;
     } else {
-        video.removeAttribute("src");
-        video.load();
-
-        document.getElementById("playerMessage").innerText =
-            "No stream added yet. Add an official licensed video URL.";
+      alert("Your browser does not support this video format.");
     }
 
-    player.scrollIntoView({behavior: "smooth"});
-}
+    function selectMatch(sport) {
+      if (sport === "football") {
+        document.getElementById("player").scrollIntoView({
+          behavior: "smooth"
+        });
+      }
 
-function closePlayer() {
-    const video = document.getElementById("video");
-    video.pause();
-    video.removeAttribute("src");
-    video.load();
-
-    document.getElementById("player").style.display = "none";
-}
-</script>
+      if (sport === "basketball") {
+        alert(
+          "Basketball demonstration selected. " +
+          "Connect an authorized basketball stream to watch it."
+        );
+      }
+    }
+  </script>
 
 </body>
 </html>
-
-
-

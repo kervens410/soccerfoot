@@ -1,18 +1,97 @@
 {
+  "website": {
+    "name": "SPORTZONE",
+    "version": "1.0.0",
+    "description": "Your destination for live sports coverage"
+  },
+
   "streams": [
     {
-      "id": "soccer1",
-      "name": "Soccer Live",
-      "sport": "soccer",
-      "provider": "Official Provider",
-      "url": "YOUR_LICENSED_HLS_URL"
+      "id": "football-001",
+      "title": "Premier League - Live Coverage",
+      "sport": "football",
+      "competition": "Premier League",
+      "homeTeam": "Manchester City",
+      "awayTeam": "Arsenal",
+      "status": "upcoming",
+      "startTime": "2026-11-02T16:00:00Z",
+      "provider": {
+        "name": "Official Broadcast Partner",
+        "type": "licensed"
+      },
+      "stream": {
+        "type": "hls",
+        "url": "",
+        "available": false
+      },
+      "thumbnail": "images/football.jpg",
+      "language": "English"
     },
+
     {
-      "id": "basketball1",
-      "name": "Basketball Live",
+      "id": "football-002",
+      "title": "Champions League - Live Coverage",
+      "sport": "football",
+      "competition": "UEFA Champions League",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Barcelona",
+      "status": "upcoming",
+      "startTime": "2026-11-03T20:00:00Z",
+      "provider": {
+        "name": "Official Broadcast Partner",
+        "type": "licensed"
+      },
+      "stream": {
+        "type": "hls",
+        "url": "",
+        "available": false
+      },
+      "thumbnail": "images/champions-league.jpg",
+      "language": "English"
+    },
+
+    {
+      "id": "basketball-001",
+      "title": "NBA - Live Coverage",
       "sport": "basketball",
-      "provider": "Official Provider",
-      "url": "YOUR_LICENSED_HLS_URL"
+      "competition": "NBA",
+      "homeTeam": "Los Angeles Lakers",
+      "awayTeam": "Golden State Warriors",
+      "status": "upcoming",
+      "startTime": "2026-11-02T02:00:00Z",
+      "provider": {
+        "name": "Official Broadcast Partner",
+        "type": "licensed"
+      },
+      "stream": {
+        "type": "hls",
+        "url": "",
+        "available": false
+      },
+      "thumbnail": "images/nba.jpg",
+      "language": "English"
+    },
+
+    {
+      "id": "basketball-002",
+      "title": "NBA - Live Coverage",
+      "sport": "basketball",
+      "competition": "NBA",
+      "homeTeam": "Boston Celtics",
+      "awayTeam": "Miami Heat",
+      "status": "upcoming",
+      "startTime": "2026-11-03T00:30:00Z",
+      "provider": {
+        "name": "Official Broadcast Partner",
+        "type": "licensed"
+      },
+      "stream": {
+        "type": "hls",
+        "url": "",
+        "available": false
+      },
+      "thumbnail": "images/basketball.jpg",
+      "language": "English"
     }
   ]
 }
